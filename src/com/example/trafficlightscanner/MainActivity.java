@@ -15,6 +15,7 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 import android.app.Activity;
+import android.hardware.Camera;
 import android.hardware.Camera.Size;
 import android.os.Bundle;
 import android.util.Log;
@@ -69,6 +70,7 @@ public class MainActivity extends Activity implements CvCameraViewListener2, OnT
 
         mOpenCvCameraView = (CameraBridgeViewBase) findViewById(R.id.traffic_light_surfaceview);
         mOpenCvCameraView.setCvCameraViewListener(this);
+        Log.i(TAG, getVideoResolution().get(0).height + "x" +getVideoResolution().get(0).width );
     }
 
     
@@ -125,11 +127,6 @@ public class MainActivity extends Activity implements CvCameraViewListener2, OnT
 
 
 
-
-
-
-
-
 	@Override
 	public void onCameraViewStarted(int width, int height) {
         mRgba = new Mat(height, width, CvType.CV_8UC4);	
@@ -181,6 +178,12 @@ public class MainActivity extends Activity implements CvCameraViewListener2, OnT
     	return hsv;
     }
 
-
+	public List<Camera.Size> getVideoResolution()
+	{
+	Camera camera = Camera.open();
+	List<Camera.Size> cameraSizes = camera.getParameters().getSupportedVideoSizes();
+	camera.release();
+	return cameraSizes;
+	}
 	
 }
